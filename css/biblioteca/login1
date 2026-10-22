@@ -1,0 +1,45 @@
+const usuarios = [
+  {usuario: "jonas", senha: "123"},
+  {usuario: "maria", senha: "456"},
+  {usuario: "joao", senha: "789"}
+];
+
+async function entrar() {
+  const usuario = document.getElementById("usuario").value;
+  const senha = document.getElementById("senha").value;
+  const mensagem = document.getElementById("mensagem");
+  const barra = document.getElementById("barra");
+  const porcentagem = document.getElementById("porcentagem");
+
+  if(usuario === "" || senha === ""){
+    Swal.fire("Atenção", "Preencha todos os campos", "warning");
+    return;
+  }
+
+  let encontrado = false;
+  for(let i=0; i < usuarios.length; i++){
+    if(usuario === usuarios[i].usuario && senha === usuarios[i].senha){
+      encontrado = true; break;
+    }
+  }
+
+  if(encontrado){
+    mensagem.textContent = "Sucesso!";
+    barra.hidden = false;
+    porcentagem.hidden = false;
+    
+    let progresso = 0;
+    while(progresso < 100){
+      progresso++;
+      barra.value = progresso;
+      porcentagem.textContent = progresso + "%";
+      await new Promise(r => setTimeout(r, 30));
+    }
+
+    Swal.fire("Sucesso", "Login realizado", "success").then(() => {
+      window.location.href = "usuario.html";
+    });
+  } else {
+    Swal.fire("Erro", "Usuário ou senha incorretos", "error");
+  }
+}
